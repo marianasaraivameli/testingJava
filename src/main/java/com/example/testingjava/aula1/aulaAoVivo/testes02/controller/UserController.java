@@ -1,4 +1,4 @@
-package com.example.testingjava.aula1.aulaAoVivo.teste02.controller;
+package com.example.testingjava.aula1.aulaAoVivo.testes02.controller;
 
 import com.example.testingjava.aula1.aulaAoVivo.testes02.dto.UserDTO;
 import org.springframework.http.ResponseEntity;
