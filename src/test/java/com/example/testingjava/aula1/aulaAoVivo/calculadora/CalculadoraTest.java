@@ -1,6 +1,7 @@
 package com.example.testingjava.aula1.aulaAoVivo.calculadora;
 
 import com.example.testingjava.aula1.aulaAoVivo.calculadora.Calculadora;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +13,18 @@ public class CalculadoraTest {
     // quando:
     // então:
 
+    Calculadora calculadora;
+
+    @BeforeEach
+    public void setup() {
+        calculadora = new Calculadora();
+    }
+
     @Test
     @DisplayName("Valida a soma")
     public void soma_returnDouble_whenValidInput() {
         // 3 estapas:
         // setup:
-        Calculadora calculadora = new Calculadora();
         double n1 = 10;
         double n2 = 20;
         double expected = 30;
@@ -34,7 +41,6 @@ public class CalculadoraTest {
     @Test
     @DisplayName("Valida a divisão")
     public void dividir_returnDouble_whenTwoPositiveNumbers() {
-        Calculadora calculadora = new Calculadora();
         double n1 = 20;
         double n2 = 5;
         double expected = 4;
@@ -48,7 +54,6 @@ public class CalculadoraTest {
     @Test
     @DisplayName("Verifica se n2 é igual a zero")
     public void dividir_returnDouble_whenDivisorEqualsZero() {
-        Calculadora calculadora = new Calculadora();
         double n1 = 20;
         double n2 = 0;
         double expected = 0;
