@@ -2,13 +2,15 @@ package com.example.testingjava.aula1.praticaIntegradora.service;
 
 import com.example.testingjava.aula1.praticaIntegradora.model.Student;
 import com.example.testingjava.aula1.praticaIntegradora.model.Subject;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService implements IStudent {
@@ -27,10 +29,20 @@ public class StudentService implements IStudent {
         return studentsList;
     }
 
-    @Override
-    public Double calculateAverage() {
-        List<Student> students = getAll();
+    public List<Student> createNewStudent(Student student) {
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
-        return null;
+        studentsList = getAll();
+
+        studentsList = new ArrayList<>(studentsList);
+        studentsList.add(student);
+
+        try {
+            writer.writeValue(new File(LINK_FILE), studentsList);
+        } catch (Exception ex) {
+            System.out.println("Error create new user");
+        }
+        return studentsList;
     }
+
 }
