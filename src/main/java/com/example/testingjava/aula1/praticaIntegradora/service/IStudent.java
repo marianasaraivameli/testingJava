@@ -7,4 +7,6 @@ import java.util.List;
 public interface IStudent {
     public List<Student> getAll();
     public List<Student> createNewStudent(Student student);
+
+    public Double averageSubjects(List<Student> students);
 }

@@ -45,4 +45,15 @@ public class StudentService implements IStudent {
         return studentsList;
     }
 
+    @Override
+    public Double averageSubjects(List<Student> students) {
+//        studentsList = students;
+//
+//        return studentsList.stream()
+//                .map(subjects -> subjects.getSubjects().stream()
+//                        .map(Subject::getScore))
+//                        .reduce(0.0, Double::sum);
+        return 2.0;
+    }
+
 }

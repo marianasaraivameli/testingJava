@@ -12,6 +12,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectDTO {
+public class StudentDTO {
+    private String studentName;
+    private String message;
+    private Double averageScore;
     private List<Subject> subjects;
 }
