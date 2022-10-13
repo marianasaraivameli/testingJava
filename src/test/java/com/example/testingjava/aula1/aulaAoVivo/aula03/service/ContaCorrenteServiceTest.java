@@ -119,6 +119,16 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
-    void depositar() {
+    void depositar() throws ContaInexistenteException, InvalidNumberException {
+        final int valorOperacao = 100;
+
+        Mockito.when(dao.getContaCorrente(ArgumentMatchers.anyInt()))
+                .thenReturn(contaCorrente);
+        Mockito.when(dao.updateConta(ArgumentMatchers.any()))
+                .thenReturn(true);
+
+        service.depositar(contaCorrente.getNumero(), valorOperacao);
+
+        assertThat(contaCorrente.getSaldo()).isEqualTo(valorOperacao);
     }
 }
