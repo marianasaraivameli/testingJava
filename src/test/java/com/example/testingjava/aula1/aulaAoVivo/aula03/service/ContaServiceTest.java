@@ -34,32 +34,32 @@ class ContaServiceTest {
     @Test
     @DisplayName("Verifica se a transferência foi realizada com sucesso!")
     void transferir_retornoTransf_quandoRealizadaComSucesso() throws ContaInexistenteException, InvalidNumberException {
-// REVERRRRR ESTA PARTE DO TEST. TESTE FALHANDO
-//        contaOrigem = new ContaCorrente(10, "Mariana");
-//        contaDestino = new ContaCorrente(20, "Maria Olivia");
-//        double saldo = 500;
-//        double valorOperacao = 50;
-//
-//        Mockito.when(dao.getContaCorrente(ArgumentMatchers.anyInt()))
-//                .thenReturn(contaOrigem);
-//        Mockito.when(dao.updateConta(ArgumentMatchers.any()))
-//                .thenReturn(true);
-//
-//
-//        Mockito.when(dao.getContaCorrente(ArgumentMatchers.anyInt()))
-//                .thenReturn(contaDestino);
-//        Mockito.when(dao.updateConta(ArgumentMatchers.any()))
-//                .thenReturn(true);
-//
-//        serviceCC.depositar(saldo);
-//
-//        TransfDTO trans = service.transferir(contaOrigem.getNumero(), contaDestino.getNumero(), valorOperacao);
-//
-//        double ccOrigem = contaOrigem.getSaldo();
-//        double ccDestino = contaDestino.getSaldo();
-//
-//        assertThat(ccOrigem).isEqualTo(contaDestino.getSaldo());
-//        assertThat(ccDestino).isEqualTo(50);
+        contaOrigem = new ContaCorrente(10, "Mariana");
+        contaDestino = new ContaCorrente(20, "Maria Olivia");
+        double valorSaldo = 500;
+        double valorOperacao = 50;
 
+        Mockito.when(dao.getConta(ArgumentMatchers.anyInt()))
+                .thenReturn(contaOrigem);
+        Mockito.when(dao.updateConta(ArgumentMatchers.any()))
+                .thenReturn(true);
+
+        Mockito.when(dao.getConta(ArgumentMatchers.anyInt()))
+                .thenReturn(contaDestino);
+        Mockito.when(dao.updateConta(ArgumentMatchers.any()))
+                .thenReturn(true);
+
+        contaOrigem.depositar(valorSaldo);
+        contaOrigem.sacar(valorOperacao);
+        contaDestino.depositar(valorOperacao);
+
+        TransfDTO trans = service.transferir(contaOrigem.getNumero(), contaDestino.getNumero(), valorOperacao);
+
+        double ccOrigem = contaOrigem.getSaldo();
+        double ccDestino = contaDestino.getSaldo();
+
+        assertThat(trans).isNotNull();
+        assertThat(ccOrigem).isEqualTo(contaOrigem.getSaldo());
+        assertThat(ccDestino).isEqualTo(valorOperacao);
     }
 }
