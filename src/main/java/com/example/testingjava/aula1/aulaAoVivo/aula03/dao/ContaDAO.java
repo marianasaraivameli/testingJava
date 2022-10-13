@@ -24,12 +24,12 @@ public class ContaDAO {
         numberGenerator = NumberGenerator.getInstance();
 
         // Dados testes
-        int numeroConta = numberGenerator.getNext();
-        contas.put(numeroConta, new ContaCorrente(numeroConta, "Cliente 1"));
-        numeroConta = numberGenerator.getNext();
-        contas.put(numeroConta, new ContaEspecial(numeroConta, "Cliente 2", 1000));
-        numeroConta = numberGenerator.getNext();
-        contas.put(numeroConta, new ContaPoupanca(numeroConta, "Cliente 3"));
+//        int numeroConta = numberGenerator.getNext();
+//        contas.put(numeroConta, new ContaCorrente(numeroConta, "Cliente 1"));
+//        numeroConta = numberGenerator.getNext();
+//        contas.put(numeroConta, new ContaEspecial(numeroConta, "Cliente 2", 1000));
+//        numeroConta = numberGenerator.getNext();
+//        contas.put(numeroConta, new ContaPoupanca(numeroConta, "Cliente 3"));
     }
 
     public ContaCorrente novaContaCorrente(String cliente) {
@@ -98,6 +98,11 @@ public class ContaDAO {
         contas.put(conta.getNumero(), conta);
         return true;
     }
+
+    public void deleteAll() {
+        contas.clear();
+    }
+
 
     public String obterDadosConta(int numeroConta) throws ContaInexistenteException {
         Conta conta = contas.get(numeroConta);

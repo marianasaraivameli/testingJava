@@ -32,12 +32,11 @@ public class ContaCorrenteControllerIT {
     @Autowired
     ObjectMapper objectMapper = new ObjectMapper();
 
-//    @BeforeEach
-//    void setup() {
-//        // fazer o metodo deleteAll no ContaDAO
-//        contaDAO.deleteAll();
-//        log.info("Contas: " + contaDAO.listarTodasContas().size());
-//    }
+    @BeforeEach
+    void setup() {
+        contaDAO.deleteAll();
+        log.info("Contas: " + contaDAO.listarTodasContas().size());
+    }
 
     @Test
     void novaContaCorrente_returnContaCorrente_quandoCriarComSucesso() throws Exception {
