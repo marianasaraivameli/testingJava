@@ -1,5 +1,6 @@
 package com.example.testingjava.aula1.aulaAoVivo.aula03.controller;
 
+import com.example.testingjava.aula1.aulaAoVivo.aula03.dto.ContaDTO;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.ContaInexistenteException;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.InsufficientSaldoException;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.InvalidNumberException;
@@ -47,5 +48,10 @@ public class ContaCorrenteController {
         throw new InsufficientSaldoException("Saldo insuficiente");
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<ContaCorrente> novaContaCorrenteBody(@RequestBody ContaDTO contaDTO) {
+        ContaCorrente novaContaCorrete = service.novaContaCorrente(contaDTO.getCliente());
 
+        return new ResponseEntity<>(novaContaCorrete, HttpStatus.CREATED);
+    }
 }

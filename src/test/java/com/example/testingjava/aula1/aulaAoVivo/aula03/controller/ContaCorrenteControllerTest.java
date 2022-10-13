@@ -1,5 +1,6 @@
 package com.example.testingjava.aula1.aulaAoVivo.aula03.controller;
 
+import com.example.testingjava.aula1.aulaAoVivo.aula03.dto.ContaDTO;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.model.ContaCorrente;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.service.ContaCorrenteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +71,18 @@ class ContaCorrenteControllerTest {
     }
 
     @Test
-    void novaContaCorrente() {
+    void novaContaCorrente2_returnContaCorrente_quandoCriarNovaConta() throws Exception {
+        BDDMockito.when(service.novaContaCorrente(anyString()))
+                .thenReturn(contaCorrente);
+
+        ResultActions resposta = mockMvc.perform(
+                post("/cc/new")
+                        .content(objectMapper.writeValueAsString(new ContaDTO(contaCorrente.getCliente())))
+                        .contentType(MediaType.APPLICATION_JSON) );
+
+        resposta.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.cliente", CoreMatchers.is(contaCorrente.getCliente())))
+                .andExpect(jsonPath("$.saldo", CoreMatchers.is(contaCorrente.getSaldo())));
     }
 
     @Test
