@@ -5,24 +5,22 @@ import com.example.testingjava.aula1.aulaAoVivo.aula03.dto.TransfDTO;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.ContaInexistenteException;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.InvalidNumberException;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.model.ContaCorrente;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ContaServiceTest {
 
     @InjectMocks
     private ContaService service;
-
-    private ContaCorrente serviceCC;
 
     @Mock
     private ContaDAO dao;
@@ -62,4 +60,22 @@ class ContaServiceTest {
         assertThat(ccOrigem).isEqualTo(contaOrigem.getSaldo());
         assertThat(ccDestino).isEqualTo(valorOperacao);
     }
+
+
+    @Test
+    @DisplayName("Verifica se a conta não existe,  lança ContaInexistenteException!")
+    void transgerir_lancaContaInexistente_quandoContaNaoExiste() throws ContaInexistenteException {
+        int numeroContaInexistente = 999;
+        double valorOperacao = 100;
+
+        BDDMockito.given(dao.getConta(ArgumentMatchers.anyInt()))
+                .willThrow(new ContaInexistenteException("Conta inexistente"));
+
+        Assertions.assertThrows(ContaInexistenteException.class, () -> {
+            service.transferir(numeroContaInexistente, 2, valorOperacao);
+        });
+
+        verify(dao, never()).updateConta(ArgumentMatchers.any());
+    }
+
 }
