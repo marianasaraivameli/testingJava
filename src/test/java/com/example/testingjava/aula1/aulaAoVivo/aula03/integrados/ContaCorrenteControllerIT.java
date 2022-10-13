@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,6 +71,24 @@ public class ContaCorrenteControllerIT {
                 .andExpect(jsonPath("$.cliente", CoreMatchers.is(contaCorrente.getCliente())))
                 .andExpect(jsonPath("$.numero", CoreMatchers.is(contaCorrente.getNumero())));
 
+    }
+
+    @Test
+    void depositar_returnoContaCorrente_quandoDepositarComSucesso() throws Exception {
+        ContaCorrente contaCorrente = contaDAO.novaContaCorrente("Cliente ");
+        double valorDeposito = 100;
+
+        ResultActions resposta = mockMvc.perform(
+                patch("/cc/dep/{numero}/{valor}", contaCorrente.getNumero(), valorDeposito)
+                        .contentType(MediaType.APPLICATION_JSON));
+
+        resposta.andExpect(status().isOk())
+                .andExpect(jsonPath("$.cliente", CoreMatchers.is(contaCorrente.getCliente())))
+                .andExpect(jsonPath("$.saldo", CoreMatchers.is(valorDeposito)));
+
+        assertThat(contaDAO.getContaCorrente(contaCorrente.getNumero()).getSaldo())
+                .isEqualTo(valorDeposito);
 
     }
+
 }
