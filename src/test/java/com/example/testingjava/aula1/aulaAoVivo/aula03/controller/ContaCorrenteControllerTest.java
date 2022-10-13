@@ -1,6 +1,8 @@
 package com.example.testingjava.aula1.aulaAoVivo.aula03.controller;
 
 import com.example.testingjava.aula1.aulaAoVivo.aula03.dto.ContaDTO;
+import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.ContaInexistenteException;
+import com.example.testingjava.aula1.aulaAoVivo.aula03.exception.InvalidNumberException;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.model.ContaCorrente;
 import com.example.testingjava.aula1.aulaAoVivo.aula03.service.ContaCorrenteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +20,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,7 +88,24 @@ class ContaCorrenteControllerTest {
     }
 
     @Test
-    void depositar() {
+    void depositar_returnoContaCorrenteAtualizada_quandoDepositoSucesso() throws Exception {
+        double valorDeposito = 100;
+        BDDMockito.when(service.getConta(anyInt()))
+                .thenReturn(contaCorrente);
+
+        BDDMockito.doAnswer(invocation -> {
+            contaCorrente.depositar(valorDeposito);
+            return null;
+        }).when(service).depositar(contaCorrente.getNumero(), valorDeposito);
+
+        ResultActions resposta = mockMvc.perform(
+                patch("/cc/dep/{numero}/{valor}", contaCorrente.getNumero(), valorDeposito)
+                        .contentType(MediaType.APPLICATION_JSON));
+
+        resposta.andExpect(status().isOk())
+                .andExpect(jsonPath("$.cliente", CoreMatchers.is(contaCorrente.getCliente())))
+                .andExpect(jsonPath("$.saldo", CoreMatchers.is(valorDeposito)));
+
     }
 
     @Test
